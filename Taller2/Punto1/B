@@ -1,0 +1,34 @@
+%%B
+%Naive 
+Rnaive = mean(data,2);
+%%VaR
+%%Estimación puntual - Paramétrico
+p = -Rnaive;
+VaR1 = prctile(p,95)
+%%Bootstrap - no paramétrico
+b = bootstrp(1000, @p95 , p);
+VaR2 = mean(b)
+hist(b)
+IC=[prctile(b,2.5) prctile(b, 97.5)]
+
+
+%%VaR condicional
+%%Estimación puntual - paramétrico
+I1=find(Rnaive>VaR1);
+I2=Rnaive(I1);
+CVaR=mean(I2)
+%%Bootstrap - no paramétrico
+bt = bootstrp(1000, @CVaR , p);
+VaR2 = mean(bt)
+hist(bt)
+IC=[prctile(bt,2.5) prctile(bt, 97.5)]
+
+
+%%Volatilidad
+%%Estimación puntual - paramétrico
+sigma = std(Rnaive)
+%%Bootstrap - no paramétrico
+B = bootstrp(1000, @std , Rnaive);
+sigma2 = mean(B)
+hist(B)
+IC=[prctile(B,2.5) prctile(B, 97.5)]
