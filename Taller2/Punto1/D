@@ -1,0 +1,76 @@
+%%D
+v=100;
+SR_Simulacion = [];
+SR_MinVar = [];
+SR_PIR = [];
+SR_Naive = [];
+WoptiSim = [];
+[k l] = size(data);
+for j = 1 : k-v-1
+    %%Simulación
+    dataj = data(j:j+v-1,:);
+    dataj1 = data(j+1:j+v,:);
+    [m n]= size(dataj);
+    s=10000;
+    w1=rand(n,s); %vector aleatorio de números entre 0 y 1
+    w2=sum(w1);
+    wa=ones(n,1)*w2
+    W=w1./wa;
+    R=dataj1*W; %Rentabilidad
+    rm=mean(R); %Rentabilidad media
+    riesgo=std(R);
+    SR=rm./riesgo;
+    MaxSR=max(SR);
+    SR_Simulacion(j)=MaxSR;
+    I=find(SR==MaxSR);
+    Wopti=W(:,I);
+    
+    
+    %%Mínima Varianza
+    C=cov(dataj);
+    f=zeros(n,1);
+    A=[];
+    b=[];
+    Aeq=ones(1,n)
+    beq=1;
+    lb=zeros(n,1);
+    ub=ones(n,1);
+    Wopti=quadprog(C,f,A,b,Aeq,beq,lb,ub);
+    R=dataj1*Wopti;
+    rm=mean(R);
+    riesgo=std(R);
+    SR=rm/riesgo;
+    SR_MinVar(j)=SR;
+    
+    %%PIR
+    sigmas = [];
+    sigma2s = [];
+    for i=1 : n
+        A = dataj(:,i);
+        
+        %%Volatilidad
+        %%Estimación puntual - paramétrico
+        sigma = std(A);
+        sigmas(i) = sigma;
+    end
+    W=[]
+    for k=1 : n
+        W(k)= (1/sigmas(k))/sum(ones(1,n)./sigmas);
+    end
+    R1=dataj1*W';
+    rm1=mean(R1); %Rentabilidad media
+    riesgo1=std(R1);
+    SR1=rm1/riesgo1;
+    SR_PIR(j)=SR1;
+    
+    %%Naive
+    R=dataj1*(1/n);
+    rm=mean(R); %Rentabilidad media
+    riesgo=std(R);
+    SR=rm/riesgo;
+    SR_Naive(j)= SR;    
+end
+mean(SR_Simulacion)
+mean(SR_MinVar)
+mean(SR_PIR)
+mean(SR_Naive)
