@@ -32,3 +32,4 @@ y = norminv(F);
 x = log(to);
 plot(x, y, 'o')
 fitlm(x,y)
+.gitattributes
