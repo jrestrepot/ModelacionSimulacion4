@@ -1,0 +1,5 @@
+%%A
+boxplot(data)
+histogram(data) 
+plotmatrix(data)
+plot(data)
