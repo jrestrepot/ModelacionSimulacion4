@@ -1,0 +1,21 @@
+%%C
+%%Ventanas móviles
+v=100 %tamaño de la ventana
+l=length(Rnaive)
+desv=[]
+VaR1s=[]
+CVaRs=[]
+for j=1 : l-v
+       Rnaivej=Rnaive(j:j+v-1);
+       desv(j)=std(Rnaivej); %desv. de cada ventana
+       VaR1s(j)=prctile(Rnaivej,95);
+       I1=find(Rnaivej>VaR1);
+       I2=Rnaivej(I1);
+       CVaRs(j)=mean(I2);
+end
+plot(VaR1s, 'r')
+hold on
+plot(desv, 'm')
+hold on
+plot(CVaRs, 'b')
+legend('VaR','Vol','CVaR','FontSize',15)
