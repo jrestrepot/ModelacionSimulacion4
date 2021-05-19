@@ -1,0 +1,30 @@
+%% CARTAS DE CONTROL
+%Limites de control carta Xbarra
+xbar= []; %Llenar con datos
+rango= []; %Llenar con datos
+[n m] = size(xbar)
+xbarbar= 213.966
+rbar= 2.136
+A2= 0.729
+LCS= xbarbar+A2*rbar
+LCI= xbarbar-A2*rbar
+plot(LCS*ones(m,1),'r')
+hold on
+plot(LCI*ones(m,1),'r')
+hold on
+plot(xbarbar*ones(m,1),'m')
+hold on
+plot(xbar, 'k')
+
+%Limites de control carta R
+D4= 2.2822
+D3= 0
+LCS1= rbar*D4
+LCI1= rbar*D3
+plot(LCS1*ones(100,1),'r')
+hold on
+plot(LCI1*ones(100,1),'r')
+hold on
+plot(rbar*ones(100,1),'m')
+hold on
+plot(rango, 'k')
