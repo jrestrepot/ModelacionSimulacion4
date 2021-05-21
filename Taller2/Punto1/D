@@ -64,7 +64,7 @@ for j = 1 : k-v-1
     SR_PIR(j)=SR1;
     
     %%Naive
-    R=dataj1*(1/n);
+    R=mean(dataj1,2);
     rm=mean(R); %Rentabilidad media
     riesgo=std(R);
     SR=rm/riesgo;
